@@ -7,7 +7,7 @@ import { Text as DefaultText, View as DefaultView } from "react-native";
 
 import Colors from "@/constants/Colors";
 
-import { useColorScheme } from "./useColorScheme";
+import { FontSize, TextColor } from "@/types/tailwind.types";
 
 type ThemeProps = {
   lightColor?: string;
@@ -32,37 +32,24 @@ export function useThemeColor(
 }
 
 export function Text(
-  props: TextProps & {
-    fontSize?:
-      | "text-xs"
-      | "text-sm"
-      | "text-base"
-      | "text-lg"
-      | "text-xl"
-      | "text-[10px]";
-  }
+  props: TextProps & { color?: TextColor; size?: FontSize }
 ) {
   const {
     style,
     lightColor,
     darkColor,
     className: classNameOriginal,
+    color = "text-white",
+    size = "text-base",
     ...otherProps
   } = props;
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-  const className = classNames(props.fontSize, classNameOriginal);
+  const className = classNames(color, size, classNameOriginal);
 
-  return (
-    <DefaultText style={[{ color }]} className={className} {...otherProps} />
-  );
+  return <DefaultText className={className} {...otherProps} />;
 }
 
 export function View(props: ViewProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
-  const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "background"
-  );
+  const { style, lightColor, darkColor, className, ...otherProps } = props;
 
-  return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+  return <DefaultView className={className} {...otherProps} />;
 }
