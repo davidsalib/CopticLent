@@ -32,7 +32,7 @@ export default function Step1() {
   );
 }
 
-const MockNotification = ({ className }: { className?: string }) => {
+export const MockNotification = ({ className }: { className?: string }) => {
   return (
     <View
       className={classNames(

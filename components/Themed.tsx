@@ -44,6 +44,7 @@ export function Text(
     ...otherProps
   } = props;
   const className = classNames(color, size, classNameOriginal);
+  console.log(className);
 
   return <DefaultText className={className} {...otherProps} />;
 }

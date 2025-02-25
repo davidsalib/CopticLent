@@ -1,59 +1,93 @@
 // app/onboarding/Screen3.tsx
 import { Text, View } from "@/components/Themed";
-import { classNames } from "@/utils/style";
 import { useRouter } from "expo-router";
 import { Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Picker } from "@react-native-picker/picker";
+import { MockNotification } from "./step1";
+import { useState } from "react";
+import { TailwindColorsHexCodes } from "@/types/tailwind.types";
 
 export default function Step1() {
   const router = useRouter();
+  const [selectedTime, setSelectedTime] = useState(TIMES[8]);
 
   return (
     <SafeAreaView>
-      <View className="flex flex-col items-center justify-center h-full gap-16">
-        <View className="flex flex-col items-center justify-center gap-2 px-4">
+      <View className="flex flex-col items-center justify-center h-full gap-8">
+        <View className="flex flex-col items-center justify-center gap-2 px-6">
           <Text className="font-bold text-center" size="text-3xl">
             When would you like to receive your daily notification?
           </Text>
-          <Text className="text-center max-w-xs" color="text-neutral-400">
-            Choose the time that works best for you
-          </Text>
         </View>
-        <MockNotification />
-        <MockNotification className="-mt-40 -z-20 scale-95 opacity-50" />
 
-        <Button
-          title="Schedule Notification"
-          onPress={() => router.push("/onboarding/step2")}
-        />
+        <MockNotification />
+
+        <Text className="uppercase" size="text-xs" color="text-neutral-400">
+          Notify me everyday at
+        </Text>
+        <Picker
+          style={{
+            width: "100%",
+          }}
+          itemStyle={{
+            height: 150,
+            fontSize: 16,
+            color: TailwindColorsHexCodes.neutral[200],
+          }}
+          selectedValue={selectedTime["24h"]}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedTime(TIMES[itemIndex])
+          }
+        >
+          {TIMES.map((time) => (
+            <Picker.Item
+              key={time["24h"]}
+              label={time["12h"]}
+              value={time["24h"]}
+            />
+          ))}
+        </Picker>
+
+        <View>
+          <Button
+            title="Schedule Notification"
+            onPress={() => router.push("/Today")}
+          />
+          <Button
+            title="Continue without Scheduling"
+            onPress={() => router.push("/onboarding/step2")}
+            color={TailwindColorsHexCodes.neutral[500]}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
 }
 
-const MockNotification = ({ className }: { className?: string }) => {
-  return (
-    <View
-      className={classNames(
-        `bg-neutral-900  p-5 flex flex-row items-center gap-4 rounded-xl w-full max-w-sm`,
-        className
-      )}
-    >
-      <View className="h-10 w-10 rounded-lg bg-neutral-800" />
-      <View className="flex flex-col gap-1 flex-1">
-        <View className="flex flex-row justify-between items-center">
-          <Text className="font-bold">Build on the Rock</Text>
-          <Text color="text-neutral-400" size="text-sm">
-            now
-          </Text>
-        </View>
-        <Text color="text-neutral-400" size="text-sm" className="line-clamp-4">
-          Blessed 12th day of Lent. Today's theme emphasizes the importance of
-          not only hearing Christ's teachings but also actively implementing
-          them in one's life, thereby establishing a strong spiritual foundation
-          capable of withstanding life's challenges
-        </Text>
-      </View>
-    </View>
-  );
-};
+const TIMES = [
+  { "24h": "00:00", "12h": "12:00am" },
+  { "24h": "01:00", "12h": "01:00am" },
+  { "24h": "02:00", "12h": "02:00am" },
+  { "24h": "03:00", "12h": "03:00am" },
+  { "24h": "04:00", "12h": "04:00am" },
+  { "24h": "05:00", "12h": "05:00am" },
+  { "24h": "06:00", "12h": "06:00am" },
+  { "24h": "07:00", "12h": "07:00am" },
+  { "24h": "08:00", "12h": "08:00am" },
+  { "24h": "09:00", "12h": "09:00am" },
+  { "24h": "10:00", "12h": "10:00am" },
+  { "24h": "11:00", "12h": "11:00am" },
+  { "24h": "12:00", "12h": "12:00pm" },
+  { "24h": "13:00", "12h": "1:00pm" },
+  { "24h": "14:00", "12h": "2:00pm" },
+  { "24h": "15:00", "12h": "3:00pm" },
+  { "24h": "16:00", "12h": "4:00pm" },
+  { "24h": "17:00", "12h": "5:00pm" },
+  { "24h": "18:00", "12h": "6:00pm" },
+  { "24h": "19:00", "12h": "7:00pm" },
+  { "24h": "20:00", "12h": "8:00pm" },
+  { "24h": "21:00", "12h": "9:00pm" },
+  { "24h": "22:00", "12h": "10:00pm" },
+  { "24h": "23:00", "12h": "11:00pm" },
+];
