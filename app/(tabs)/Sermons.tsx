@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import sermonsData from "../data/sermons.json";
+import sermonsData from "../../data/sermons.json";
 
 export default function SermonsTab() {
   return (

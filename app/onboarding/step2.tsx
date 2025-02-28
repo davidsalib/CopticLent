@@ -1,16 +1,14 @@
 // app/onboarding/Screen3.tsx
 import { Text, View } from "@/components/Themed";
 import { useRouter } from "expo-router";
-import { Button, Pressable } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from "@react-native-picker/picker";
-import { MockNotification } from "./step1";
+
 import { useState } from "react";
 import { TailwindColorsHexCodes } from "@/types/tailwind.types";
-import {
-  SchedulableTriggerInputTypes,
-  scheduleNotificationAsync,
-} from "expo-notifications";
+
+import { scheduleDailyLentNotifications } from "@/utils/notifications";
 import CustomPressable from "@/components/CustomPressable";
 
 export default function Step1() {
@@ -52,16 +50,10 @@ export default function Step1() {
         <View className="flex flex-col items-center gap-4">
           <CustomPressable
             onPress={() => {
-              scheduleNotificationAsync({
-                content: {
-                  title: "Hi",
-                  body: "this is cool",
-                },
-                trigger: {
-                  type: SchedulableTriggerInputTypes.DATE,
-                  date: new Date(new Date().getTime() + 10000),
-                },
-              });
+              console.log("OK!");
+              scheduleDailyLentNotifications(
+                parseInt(selectedTime["24h"].split(":")[0])
+              );
               // router.push("/Today");
             }}
           >

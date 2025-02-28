@@ -2,16 +2,17 @@ import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 import { Text as BaseText } from "react-native";
 import { SafeAreaView, ScrollView } from "react-native";
-import lentDailyData from "../data/lentFinalOutput.json";
+import lentDailyData from "../../data/lentFinalOutput.json";
 import { decodeVerseId } from "@/utils/bible";
 import { TailwindColorsHexCodes } from "@/types/tailwind.types";
-
-const FIRST_DAY_OF_LENT = new Date("2025-02-24T00:00:00-08:00");
+import { getCurrentDayOfLent } from "@/utils/notifications";
+import { useMemo } from "react";
 
 export default function TodayTab() {
   const todayDate = new Date();
-  const currentDayOfLent = Math.floor(
-    (todayDate.getTime() - FIRST_DAY_OF_LENT.getTime()) / (1000 * 60 * 60 * 24)
+  const currentDayOfLent = useMemo(
+    () => getCurrentDayOfLent(todayDate),
+    [todayDate]
   );
   const todayLentData = lentDailyData[currentDayOfLent];
   const bibleStart = decodeVerseId(todayLentData.bibleStart);
