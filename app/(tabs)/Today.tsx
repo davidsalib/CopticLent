@@ -21,7 +21,7 @@ export default function TodayTab() {
         <Text className="uppercase" color="text-neutral-500" size="text-base">
           Lent day ({currentDayOfLent + 1} of 50)
         </Text>
-        <Text className="font-black" size="text-4xl">
+        <Text className="font-black" color="text-white" size="text-4xl">
           {todayLentData.theme}
         </Text>
       </View>
