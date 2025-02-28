@@ -7,6 +7,10 @@ import { Picker } from "@react-native-picker/picker";
 import { MockNotification } from "./step1";
 import { useState } from "react";
 import { TailwindColorsHexCodes } from "@/types/tailwind.types";
+import {
+  SchedulableTriggerInputTypes,
+  scheduleNotificationAsync,
+} from "expo-notifications";
 
 export default function Step1() {
   const router = useRouter();
@@ -52,7 +56,19 @@ export default function Step1() {
         <View>
           <Button
             title="Schedule Notification"
-            onPress={() => router.push("/Today")}
+            onPress={() => {
+              scheduleNotificationAsync({
+                content: {
+                  title: "Hi",
+                  body: "this is cool",
+                },
+                trigger: {
+                  type: SchedulableTriggerInputTypes.DATE,
+                  date: new Date(new Date().getTime() + 10000),
+                },
+              });
+              // router.push("/Today");
+            }}
           />
           <Button
             title="Continue without Scheduling"
