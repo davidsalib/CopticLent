@@ -44,13 +44,12 @@ export function Text(
     ...otherProps
   } = props;
   const className = classNames(color, size, classNameOriginal);
-  console.log(className);
 
-  return <DefaultText className={className} {...otherProps} />;
+  return <DefaultText className={className} style={style} {...otherProps} />;
 }
 
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, className, ...otherProps } = props;
 
-  return <DefaultView className={className} {...otherProps} />;
+  return <DefaultView className={className} style={style} {...otherProps} />;
 }
