@@ -38,7 +38,7 @@ export const scheduleDailyLentNotifications = async (
       scheduleNotificationAsync({
         content: {
           title: `${dayData.theme} (Day ${dayOfLent})`,
-          body: `Blessed Lent 🙏 ${dayData.shortExplanation}`,
+          body: `${dayData.fatherQuoteText} - ${dayData.fatherQuoteName}`,
         },
         trigger: {
           type: SchedulableTriggerInputTypes.DATE,
