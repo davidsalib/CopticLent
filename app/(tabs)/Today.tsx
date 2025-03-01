@@ -58,7 +58,7 @@ export default function TodayTab() {
         <View className="bg-neutral-900 m-4 rounded-lg">
           <Button
             icon="share-square-o"
-            className="absolute top-6 right-6"
+            className="absolute top-2 -right-2"
             variant="text"
             onPress={() =>
               Share.share({
