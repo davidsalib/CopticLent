@@ -113,7 +113,7 @@ export default function TodayTab() {
         {hasAcceptedAIGeneratedContent ? (
           AIGeneratedContent
         ) : (
-          <View className="bg-neutral-900 p-8 rounded-md m-4 gap-4 flex flex-col items-center">
+          <View className="bg-neutral-900 p-8 rounded-md m-4 gap-8 flex flex-col items-center">
             <View className="flex gap-2">
               <View className="flex justify-center items-center flex-row gap-2">
                 <FontAwesome
@@ -133,18 +133,22 @@ export default function TodayTab() {
                 Lenten Patristic Insights
               </Text>
             </View>
-            <Text className="text-center">
-              Coptic Lent App uses commentaries from the Church Fathers along
-              with Open AI's most advanced O1-Reasoning Model to summarize the
-              Church Father's insights on the theme and scripture of the day.
-            </Text>
-            <Text className="text-center">
-              However, this is an experimental feature and AI *is expected* to
-              make mistakes. By accessing AI summaries, you accept that
-              summaries are not authoritative and that primary sources should be
-              referenced and take precedence in the case of any discrepancies.
-            </Text>
+            <View className="flex gap-4">
+              <Text className="text-center">
+                Coptic Lent App uses commentaries from the Church Fathers along
+                with Open AI's most advanced O1-Reasoning Model to summarize the
+                Church Father's insights on the theme and scripture of the day.
+              </Text>
+              <Text className="text-center">
+                However, this is an experimental feature and AI *is expected* to
+                make mistakes. By accessing AI summaries, you accept that
+                summaries are not authoritative and that primary sources should
+                be referenced and take precedence in the case of any
+                discrepancies.
+              </Text>
+            </View>
             <Button
+              variant="secondary"
               onPress={() =>
                 appSettignActions.setAcceptedAIGeneratedContent(true)
               }
