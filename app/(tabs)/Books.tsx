@@ -44,9 +44,6 @@ export default function BooksTab() {
   return (
     <SafeAreaView>
       <View className="flex flex-col gap-2 px-4 pt-8 pb-4">
-        <Text className="uppercase" color="text-neutral-500" size="text-base">
-          {new Date().toLocaleDateString()}
-        </Text>
         <Text className="font-black" size="text-4xl">
           Books
         </Text>

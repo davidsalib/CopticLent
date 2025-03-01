@@ -1,10 +1,9 @@
 // app/onboarding/Screen3.tsx
-import CustomPressable from "@/components/CustomPressable";
+import Button from "@/components/Button";
 import { Text, View } from "@/components/Themed";
-import { TailwindColorsHexCodes } from "@/types/tailwind.types";
 import { classNames } from "@/utils/style";
 import { useRouter } from "expo-router";
-import { Button, Image } from "react-native";
+import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Step1() {
@@ -34,9 +33,9 @@ export default function Step1() {
           <MockNotification />
           <MockNotification className="-mt-40 -z-20 scale-95 opacity-50" />
 
-          <CustomPressable onPress={() => router.push("/onboarding/step2")}>
+          <Button onPress={() => router.push("/onboarding/step2")}>
             Get Started
-          </CustomPressable>
+          </Button>
         </View>
       </View>
     </SafeAreaView>

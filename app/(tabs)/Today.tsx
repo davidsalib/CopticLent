@@ -23,7 +23,7 @@ export default function TodayTab() {
       <ScrollView className="pb-72">
         <View className="flex flex-col gap-2 p-16 bg-neutral-900 items-center m-4 rounded-lg">
           <Text className="uppercase" color="text-neutral-500" size="text-base">
-            Lent day ({currentDayOfLent + 1} of 50)
+            Day {currentDayOfLent + 1} of Lent
           </Text>
           <Text className="font-black" color="text-white" size="text-4xl">
             {todayLentData.theme}

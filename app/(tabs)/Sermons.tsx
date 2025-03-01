@@ -7,20 +7,30 @@ import {
   ScrollView,
 } from "react-native";
 import sermonsData from "../../data/sermons.json";
+import Button from "@/components/Button";
 
 export default function SermonsTab() {
   return (
     <SafeAreaView>
-      <View className="flex flex-col gap-2 px-4 pt-8 pb-4">
-        <Text className="uppercase" color="text-neutral-500" size="text-base">
-          {new Date().toLocaleDateString()}
-        </Text>
-        <Text className="font-black" size="text-4xl">
-          Sermons
-        </Text>
-        <Text className="uppercase text-sm" color="text-neutral-400">
-          Sermons sourced & linked to Upper Room Media
-        </Text>
+      <View className="flex flex-row justify-between px-4 pt-8 pb-4">
+        <View className="flex gap-1 flex-1">
+          <View className="flex justify-between items-center flex-row">
+            <Text className="font-black" size="text-4xl">
+              Sermons
+            </Text>
+            <Button
+              icon="plus"
+              onPress={() => Linking.openURL("https://subsplash.com")}
+              variant="text"
+            >
+              Submit
+            </Button>
+          </View>
+
+          <Text className="uppercase text-sm" color="text-neutral-400">
+            Sourced from Upper Room Media
+          </Text>
+        </View>
       </View>
       <ScrollView className="pb-72">
         {sermonsData.map((sermon, index) => (
