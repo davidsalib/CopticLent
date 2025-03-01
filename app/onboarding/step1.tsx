@@ -13,7 +13,7 @@ export default function Step1() {
     <SafeAreaView className="flex-1">
       <View className="flex-1 flex-col flex items-center">
         <Image
-          source={require("../../data/images/coptic-cross-white.jpg")}
+          source={require("../../data/images/coptic-cross-white.png")}
           className="absolute h-1/2 w-full opacity-5"
         />
         <View className="flex flex-col items-center justify-center h-full gap-16">

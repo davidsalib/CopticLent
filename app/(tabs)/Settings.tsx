@@ -11,7 +11,7 @@ const SHARE_FEEDBACK_URL =
 const SettingsScreen = () => {
   const router = useRouter();
   const scheduledNotificationTime = useDailyNotificationTime();
-
+  console.log(scheduledNotificationTime);
   return (
     <View>
       <SafeAreaView className="gap-4 flex flex-col">
@@ -28,7 +28,11 @@ const SettingsScreen = () => {
             <Text className="font-semibold" size="text-lg">
               Notification Time
             </Text>
-            <Text>Daily at {scheduledNotificationTime["12h"]}</Text>
+            <Text>
+              {scheduledNotificationTime
+                ? `Daily at ${scheduledNotificationTime["12h"]}`
+                : "Unscheduled"}
+            </Text>
           </CustomPressable>
           <CustomPressable
             className="flex flex-row items-center p-4 bg-neutral-900 rounded-md justify-between"

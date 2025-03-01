@@ -17,19 +17,25 @@ import {
   useDailyNotificationTime,
 } from "@/stores/AppStore";
 
+const DEFAULT_NOTIFICATION_TIME = NOTIFICATION_TIMES[10];
+
 export default function ModalScreen() {
   const currentNotificationTime = useDailyNotificationTime();
-  const { onScheduleTime } = useScheduleNotification(currentNotificationTime);
+  const { onScheduleTime } = useScheduleNotification();
   const appSettingActions = useAppSettingActions();
   const [isSchedulingNotifications, setIsSchedulingNotifications] =
     useState(false);
+
+  // used to set default time if user doesn't scroll to pick
+  const timeToSchedule = currentNotificationTime ?? DEFAULT_NOTIFICATION_TIME;
 
   const DefaultView = (
     <View className="flex flex-col items-center justify-center h-full gap-8">
       <View className="flex flex-col items-center justify-center gap-2 px-6">
         <Text className="font-bold text-center" size="text-3xl">
-          Your daily lent notification is scheduled at{" "}
-          {currentNotificationTime["12h"]}
+          {currentNotificationTime
+            ? `Your daily lent notification is scheduled at ${currentNotificationTime["12h"]}`
+            : `You do not currently have a daily lent notification scheduled`}
         </Text>
       </View>
       <View>
@@ -46,7 +52,6 @@ export default function ModalScreen() {
               variant="secondary"
               onPress={() => {
                 cancelAllNotifications();
-
                 Alert.alert("Daily notifications unscheduled ✅");
               }}
             >
@@ -79,7 +84,7 @@ export default function ModalScreen() {
           fontSize: 16,
           color: TailwindColorsHexCodes.neutral[200],
         }}
-        selectedValue={currentNotificationTime["24h"]}
+        selectedValue={timeToSchedule["24h"]}
         onValueChange={(itemValue, itemIndex) =>
           appSettingActions.setDailyNotificationTime(
             NOTIFICATION_TIMES[itemIndex]
@@ -98,9 +103,9 @@ export default function ModalScreen() {
       <View className="flex flex-col items-center gap-4">
         <Button
           onPress={() => {
-            onScheduleTime();
+            onScheduleTime(timeToSchedule);
             Alert.alert(
-              `Daily notifications scheduled every day at ${currentNotificationTime["12h"]} ✅`,
+              `Daily notifications scheduled every day at ${timeToSchedule["12h"]} ✅`,
               "",
               [
                 {
@@ -113,7 +118,7 @@ export default function ModalScreen() {
             );
           }}
         >
-          Schedule Daily at {currentNotificationTime["12h"]}
+          Schedule Daily at {timeToSchedule["12h"]}
         </Button>
       </View>
     </View>

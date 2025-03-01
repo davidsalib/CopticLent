@@ -15,7 +15,7 @@ import { useAppSettingActions } from "@/stores/AppStore";
 export default function Step1() {
   const router = useRouter();
   const [selectedTime, setSelectedTime] = useState(NOTIFICATION_TIMES[8]);
-  const { onScheduleTime } = useScheduleNotification(selectedTime);
+  const { onScheduleTime } = useScheduleNotification();
   const appSettingActions = useAppSettingActions();
 
   const onCompleteOnboarding = () => {
@@ -57,7 +57,7 @@ export default function Step1() {
         <View className="flex flex-col items-center gap-4">
           <Button
             onPress={() => {
-              onScheduleTime();
+              onScheduleTime(selectedTime);
               onCompleteOnboarding();
             }}
           >

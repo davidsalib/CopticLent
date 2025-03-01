@@ -5,6 +5,7 @@ import {
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { produce } from "immer";
 
 interface AppSettingsState {
   dailyNotificationTime: DailyNotificationTime | undefined;
@@ -14,7 +15,7 @@ interface AppSettingsState {
 
 interface AppSettingsActions {
   setDailyNotificationTime: (
-    dailyNotificationTime: DailyNotificationTime
+    dailyNotificationTime: DailyNotificationTime | undefined
   ) => void;
   setAcceptedAIGeneratedContent: (acceptedAIGeneratedContent: boolean) => void;
   setOnboardingComplete: (isOnboardingComplete: boolean) => void;
@@ -33,11 +34,25 @@ export const useAppSettings = create<AppSettingsStore>()(
       actions: {
         setDailyNotificationTime: (
           dailyNotificationTime: DailyNotificationTime | undefined
-        ) => set({ dailyNotificationTime }),
+        ) =>
+          set(
+            produce((state) => {
+              console.log("set ", dailyNotificationTime);
+              state.dailyNotificationTime = dailyNotificationTime;
+            })
+          ),
         setOnboardingComplete: (isOnboardingComplete: boolean) =>
-          set({ isOnboardingComplete }),
+          set(
+            produce((state) => {
+              state.isOnboardingComplete = isOnboardingComplete;
+            })
+          ),
         setAcceptedAIGeneratedContent: (acceptedAIGeneratedContent: boolean) =>
-          set({ acceptedAIGeneratedContent }),
+          set(
+            produce((state) => {
+              state.acceptedAIGeneratedContent = acceptedAIGeneratedContent;
+            })
+          ),
       },
     }),
     {
