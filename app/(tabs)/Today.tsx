@@ -1,6 +1,6 @@
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
-import { Text as BaseText } from "react-native";
+import { Text as BaseText, Share } from "react-native";
 import { SafeAreaView, ScrollView } from "react-native";
 import lentDailyData from "../../data/lentFinalOutput.json";
 import { decodeVerseId } from "@/utils/bible";
@@ -28,12 +28,7 @@ export default function TodayTab() {
 
   const AIGeneratedContent = (
     <>
-      <View className="flex items-center gap-4 flex-row justify-center p-4 bg-neutral-900 rounded-md mt-4">
-        <FontAwesome
-          name="magic"
-          size={16}
-          color={TailwindColorsHexCodes.neutral[500]}
-        />
+      <View className="flex items-center gap-4 flex-row justify-center p-4 bg-neutral-900 rounded-md mt-4 mx-4">
         <Text className="uppercase" color="text-neutral-500" size="text-base">
           Experimental AI Insights
         </Text>
@@ -60,27 +55,43 @@ export default function TodayTab() {
   return (
     <SafeAreaView>
       <ScrollView contentContainerClassName="pb-24">
-        <View className="flex flex-col gap-2 p-12 bg-neutral-900 items-center m-4 rounded-lg">
-          <Text className="uppercase" color="text-neutral-500" size="text-base">
-            Day {currentDayOfLent + 1} of Lent
-          </Text>
-          <Text className="font-black" color="text-white" size="text-4xl">
-            {todayLentData.theme}
-          </Text>
-          <Text
-            color="text-neutral-300"
-            size="text-base"
-            className="text-center"
-          >
-            "{todayLentData.fatherQuoteText}"
-          </Text>
-          <Text
-            color="text-neutral-500"
-            size="text-base"
-            className="text-center"
-          >
-            {todayLentData.fatherQuoteName}
-          </Text>
+        <View className="bg-neutral-900 m-4 rounded-lg">
+          <Button
+            icon="share-square-o"
+            className="absolute top-6 right-6"
+            variant="text"
+            onPress={() =>
+              Share.share({
+                message: `"${todayLentData.fatherQuoteText}"\n\n- ${todayLentData.fatherQuoteName}`,
+              })
+            }
+          />
+          <View className="flex flex-col gap-2 p-12 items-center">
+            <Text
+              className="uppercase"
+              color="text-neutral-500"
+              size="text-base"
+            >
+              Day {currentDayOfLent + 1} of Lent
+            </Text>
+            <Text className="font-black" color="text-white" size="text-4xl">
+              {todayLentData.theme}
+            </Text>
+            <Text
+              color="text-neutral-300"
+              size="text-base"
+              className="text-center"
+            >
+              "{todayLentData.fatherQuoteText}"
+            </Text>
+            <Text
+              color="text-neutral-500"
+              size="text-base"
+              className="text-center"
+            >
+              {todayLentData.fatherQuoteName}
+            </Text>
+          </View>
         </View>
 
         <Card
@@ -142,6 +153,13 @@ export default function TodayTab() {
             </Button>
           </View>
         )}
+        <Text
+          className="text-center m-4 max-w-xs w-full self-center flex-1"
+          color="text-neutral-400"
+        >
+          That's it for today. May Christ's light shine within you and to all
+          those around you.
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );
