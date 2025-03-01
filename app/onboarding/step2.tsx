@@ -8,12 +8,13 @@ import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
 import { TailwindColorsHexCodes } from "@/types/tailwind.types";
 
-import { scheduleDailyLentNotifications } from "@/utils/notifications";
-import CustomPressable from "@/components/CustomPressable";
+import { useScheduleNotification } from "@/utils/notifications";
+import Button from "@/components/Button";
 
 export default function Step1() {
   const router = useRouter();
-  const [selectedTime, setSelectedTime] = useState(TIMES[8]);
+  const [selectedTime, setSelectedTime] = useState(NOTIFICATION_TIMES[8]);
+  const { onScheduleTime } = useScheduleNotification(selectedTime);
 
   return (
     <SafeAreaView>
@@ -35,10 +36,10 @@ export default function Step1() {
           }}
           selectedValue={selectedTime["24h"]}
           onValueChange={(itemValue, itemIndex) =>
-            setSelectedTime(TIMES[itemIndex])
+            setSelectedTime(NOTIFICATION_TIMES[itemIndex])
           }
         >
-          {TIMES.map((time) => (
+          {NOTIFICATION_TIMES.map((time) => (
             <Picker.Item
               key={time["24h"]}
               label={time["12h"]}
@@ -48,29 +49,28 @@ export default function Step1() {
         </Picker>
 
         <View className="flex flex-col items-center gap-4">
-          <CustomPressable
+          <Button
             onPress={() => {
-              console.log("OK!");
-              scheduleDailyLentNotifications(
-                parseInt(selectedTime["24h"].split(":")[0])
-              );
-              // router.push("/Today");
+              onScheduleTime();
+              router.push("/Today");
             }}
           >
             Schedule Daily at {selectedTime["12h"]}
-          </CustomPressable>
-          <CustomPressable onPress={() => router.push("/Today")} variant="text">
+          </Button>
+          <Button onPress={() => router.push("/Today")} variant="text">
             <Text color="text-neutral-500" size="text-lg">
               Continue without scheduling
             </Text>
-          </CustomPressable>
+          </Button>
         </View>
       </View>
     </SafeAreaView>
   );
 }
 
-const TIMES = [
+export type DailyNotificationTime = { "24h": string; "12h": string };
+
+export const NOTIFICATION_TIMES: DailyNotificationTime[] = [
   { "24h": "00:00", "12h": "12:00am" },
   { "24h": "01:00", "12h": "01:00am" },
   { "24h": "02:00", "12h": "02:00am" },

@@ -4,6 +4,9 @@ import {
   cancelAllScheduledNotificationsAsync,
 } from "expo-notifications";
 import dailyLentData from "../data/lentFinalOutput.json";
+import { DailyNotificationTime } from "@/app/onboarding/step2";
+import { useCallback } from "react";
+import { useAppSettingActions, useAppSettings } from "@/stores/AppStore";
 
 // TODO: update this every day for the first day of lent
 export const FIRST_DAY_OF_LENT = new Date("2025-02-24T00:00:00-08:00");
@@ -12,7 +15,6 @@ export const getCurrentDayOfLent = (todayDate: Date) =>
     (todayDate.getTime() - FIRST_DAY_OF_LENT.getTime()) / (1000 * 60 * 60 * 24)
   );
 
-// TODO: add time param
 export const scheduleDailyLentNotifications = async (
   hourOfDayIn24hTime: number
 ) => {
@@ -56,11 +58,23 @@ export const scheduleDailyLentNotifications = async (
     });
 };
 
-async function cancelAllNotifications() {
+export async function cancelAllNotifications() {
   try {
     await cancelAllScheduledNotificationsAsync();
+    useAppSettings().actions.setDailyNotificationTime(undefined);
     console.log("All scheduled notifications have been canceled.");
   } catch (error) {
     console.error("Error canceling scheduled notifications:", error);
   }
 }
+
+export const useScheduleNotification = (time: DailyNotificationTime) => {
+  const appSettingsActions = useAppSettingActions();
+
+  const onScheduleTime = useCallback(() => {
+    appSettingsActions.setDailyNotificationTime(time);
+    scheduleDailyLentNotifications(parseInt(time["24h"].split(":")[0]));
+  }, [time]);
+
+  return { onScheduleTime };
+};
