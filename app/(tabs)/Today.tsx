@@ -7,8 +7,16 @@ import { decodeVerseId } from "@/utils/bible";
 import { TailwindColorsHexCodes } from "@/types/tailwind.types";
 import { getCurrentDayOfLent } from "@/utils/notifications";
 import { useMemo } from "react";
+import {
+  useAcceptedAIGeneratedContent,
+  useAppSettingActions,
+} from "@/stores/AppStore";
+import Button from "@/components/Button";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 export default function TodayTab() {
+  const hasAcceptedAIGeneratedContent = useAcceptedAIGeneratedContent();
+  const appSettignActions = useAppSettingActions();
   const todayDate = new Date();
   const currentDayOfLent = useMemo(
     () => getCurrentDayOfLent(todayDate),
@@ -18,9 +26,40 @@ export default function TodayTab() {
   const bibleStart = decodeVerseId(todayLentData.bibleStart);
   const bibleEnd = decodeVerseId(todayLentData.bibleEnd);
 
+  const AIGeneratedContent = (
+    <>
+      <View className="flex items-center gap-4 flex-row justify-center p-4 bg-neutral-900 rounded-md mt-4">
+        <FontAwesome
+          name="magic"
+          size={16}
+          color={TailwindColorsHexCodes.neutral[500]}
+        />
+        <Text className="uppercase" color="text-neutral-500" size="text-base">
+          Experimental AI Insights
+        </Text>
+      </View>
+      <Card
+        title="Overview"
+        description={todayLentData.shortExplanation}
+        isAIGeneratedContent={true}
+      />
+      <Card
+        title="Practical Application"
+        description={todayLentData.practice}
+        isAIGeneratedContent={true}
+      />
+
+      <Card
+        title="Deep Dive"
+        description={todayLentData.longExplanation}
+        isAIGeneratedContent={true}
+      />
+    </>
+  );
+
   return (
     <SafeAreaView>
-      <ScrollView className="pb-72">
+      <ScrollView contentContainerClassName="pb-24">
         <View className="flex flex-col gap-2 p-16 bg-neutral-900 items-center m-4 rounded-lg">
           <Text className="uppercase" color="text-neutral-500" size="text-base">
             Day {currentDayOfLent + 1} of Lent
@@ -30,7 +69,6 @@ export default function TodayTab() {
           </Text>
         </View>
 
-        <Card title="Overview" description={todayLentData.shortExplanation} />
         <Card
           title={`Today's Reading (${bibleStart.bookKey} ${bibleStart.chapter}:${bibleStart.verse}-${bibleEnd.verse})`}
         >
@@ -47,12 +85,49 @@ export default function TodayTab() {
             ))}
           </BaseText>
         </Card>
-        <Card
-          title="Practical Application"
-          description={todayLentData.practice}
-        />
-
-        <Card title="Deep Dive" description={todayLentData.longExplanation} />
+        {hasAcceptedAIGeneratedContent ? (
+          AIGeneratedContent
+        ) : (
+          <View className="bg-neutral-900 p-8 rounded-md m-4 gap-4 flex flex-col items-center">
+            <View className="flex gap-2">
+              <View className="flex justify-center items-center flex-row gap-2">
+                <FontAwesome
+                  name="magic"
+                  size={16}
+                  color={TailwindColorsHexCodes.neutral[500]}
+                />
+                <Text
+                  className="uppercase"
+                  color="text-neutral-400"
+                  size="text-sm"
+                >
+                  Experimental
+                </Text>
+              </View>
+              <Text size="text-2xl" className="font-bold">
+                Lent Insights
+              </Text>
+            </View>
+            <Text className="text-center">
+              The Coptic Lent App uses commentaries from the Church Fathers
+              along with Open AI's O1-Reasoning Model to summarize the Church
+              Father's insights on the theme and scripture of the day.
+            </Text>
+            <Text className="text-center">
+              This is an experimental feature and AI is expected to make
+              mistakes. By accessing AI summaries, you accept that summaries are
+              not authoritative and that primary sources should be referenced
+              and take precedence in the case of any discrepencies.
+            </Text>
+            <Button
+              onPress={() =>
+                appSettignActions.setAcceptedAIGeneratedContent(true)
+              }
+            >
+              View AI Generated Summaries
+            </Button>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -62,16 +137,27 @@ const Card = ({
   title,
   description,
   children,
+  isAIGeneratedContent,
 }: {
   title: string;
   description?: string;
   children?: React.ReactNode;
+  isAIGeneratedContent?: boolean;
 }) => {
   return (
     <View className="flex flex-col gap-2 border-b border-neutral-800 px-4 py-8">
-      <Text className="uppercase" color="text-neutral-500" size="text-base">
-        {title}
-      </Text>
+      <View className="flex flex-row gap-2 items-center">
+        {isAIGeneratedContent && (
+          <FontAwesome
+            name="magic"
+            size={16}
+            color={TailwindColorsHexCodes.neutral[500]}
+          />
+        )}
+        <Text className="uppercase" color="text-neutral-500" size="text-base">
+          {title}
+        </Text>
+      </View>
       {description && (
         <Text color="text-neutral-200" size="text-2xl">
           {description}
