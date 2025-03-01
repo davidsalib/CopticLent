@@ -1,7 +1,8 @@
-// import {
-//   SchedulableTriggerInputTypes,
-//   scheduleNotificationAsync,
-// } from "expo-notifications";
+import {
+  SchedulableTriggerInputTypes,
+  scheduleNotificationAsync,
+  cancelAllScheduledNotificationsAsync,
+} from "expo-notifications";
 import dailyLentData from "../data/lentFinalOutput.json";
 
 // TODO: update this every day for the first day of lent
@@ -12,9 +13,15 @@ export const getCurrentDayOfLent = (todayDate: Date) =>
   );
 
 // TODO: add time param
-export const scheduleDailyLentNotifications = (hourOfDayIn24hTime: number) => {
+export const scheduleDailyLentNotifications = async (
+  hourOfDayIn24hTime: number
+) => {
+  // First clear all existing notifications
+  await cancelAllNotifications();
+
+  // get the current day of lent to use as starting point to schedule all future notifications
   const currentDayOfLent = getCurrentDayOfLent(new Date());
-  console.log({ currentDayOfLent });
+
   dailyLentData
     .slice(currentDayOfLent, currentDayOfLent + 5)
     .forEach((dayData, index) => {
@@ -48,3 +55,12 @@ export const scheduleDailyLentNotifications = (hourOfDayIn24hTime: number) => {
       //   });
     });
 };
+
+async function cancelAllNotifications() {
+  try {
+    await cancelAllScheduledNotificationsAsync();
+    console.log("All scheduled notifications have been canceled.");
+  } catch (error) {
+    console.error("Error canceling scheduled notifications:", error);
+  }
+}
