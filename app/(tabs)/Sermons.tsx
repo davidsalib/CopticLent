@@ -37,6 +37,12 @@ export default function SermonsTab() {
             />
             <View className="flex flex-col flex-1">
               <Text className="text-lg font-semibold">{sermon.title}</Text>
+              <Text
+                className="line-clamp-1 font-semibold"
+                color="text-neutral-400"
+              >
+                {sermon.speaker}
+              </Text>
               <Text className="line-clamp-2" color="text-neutral-400">
                 {sermon.description}
               </Text>

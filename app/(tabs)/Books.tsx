@@ -50,7 +50,7 @@ export default function BooksTab() {
         </Text>
       </View>
       <ScrollView className="pb-96">
-        <View className="flex flex-wrap flex-row">
+        <View className="flex flex-wrap flex-row px-4">
           {booksData.map((book, index) => (
             <Pressable
               key={index}
@@ -61,7 +61,7 @@ export default function BooksTab() {
                 )
               }
             >
-              <View className="p-4 items-center gap-4 flex justify-center items-center bg-neutral-900">
+              <View className="p-4 rounded-lg gap-4 flex justify-center items-center bg-neutral-900">
                 <Image
                   source={bookThumbnailMap[book.id]}
                   className="w-32 h-48 object-contain rounded-md"
