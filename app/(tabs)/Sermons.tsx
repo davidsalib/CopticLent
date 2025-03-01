@@ -12,25 +12,13 @@ import Button from "@/components/Button";
 export default function SermonsTab() {
   return (
     <SafeAreaView>
-      <View className="flex flex-row justify-between px-4 pt-8 pb-4">
-        <View className="flex gap-1 flex-1">
-          <View className="flex justify-between items-center flex-row">
-            <Text className="font-black" size="text-4xl">
-              Sermons
-            </Text>
-            <Button
-              icon="plus"
-              onPress={() => Linking.openURL("https://subsplash.com")}
-              variant="text"
-            >
-              Submit
-            </Button>
-          </View>
-
-          <Text className="uppercase text-sm" color="text-neutral-400">
-            Sourced from Upper Room Media
-          </Text>
-        </View>
+      <View className="flex  px-4 pt-8 pb-4">
+        <Text className="font-black" size="text-4xl">
+          Sermons
+        </Text>
+        <Text className="uppercase text-sm" color="text-neutral-400">
+          Sourced from Upper Room Media
+        </Text>
       </View>
       <ScrollView className="pb-72">
         {sermonsData.map((sermon, index) => (
@@ -55,6 +43,18 @@ export default function SermonsTab() {
             </View>
           </Pressable>
         ))}
+        <Button
+          icon="plus"
+          onPress={() =>
+            Linking.openURL(
+              "https://form.asana.com/?k=6Fi7azqcPDAZ3LUOgbt14w&d=1128054213135307"
+            )
+          }
+          variant="text"
+        >
+          Submit a Sermon
+        </Button>
+        <View className="h-36" />
       </ScrollView>
     </SafeAreaView>
   );

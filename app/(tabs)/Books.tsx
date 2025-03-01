@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import booksData from "../../data/books.json";
+import Button from "@/components/Button";
 
 const bookThumbnailMap: Record<string, any> = {
   AH_ITS: require("../../data/book_thumbnails/AH_ITS.png"),
@@ -72,6 +73,18 @@ export default function BooksTab() {
             </Pressable>
           ))}
         </View>
+        <Button
+          icon="plus"
+          onPress={() =>
+            Linking.openURL(
+              "https://form.asana.com/?k=JV7LbecfPrW6OL8B60BbUg&d=1128054213135307"
+            )
+          }
+          variant="text"
+        >
+          Submit a Book
+        </Button>
+        <View className="h-36" />
       </ScrollView>
     </SafeAreaView>
   );
