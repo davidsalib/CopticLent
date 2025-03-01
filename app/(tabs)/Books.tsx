@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import booksData from "../../data/books.json";
 import Button from "@/components/Button";
+import { classNames } from "@/utils/style";
 
 const bookThumbnailMap: Record<string, any> = {
   AH_ITS: require("../../data/book_thumbnails/AH_ITS.png"),
@@ -49,29 +50,44 @@ export default function BooksTab() {
           Books
         </Text>
       </View>
-      <ScrollView className="pb-96">
+      <ScrollView contentContainerClassName="flex flex-col items-center gap-8 pb-36">
         <View className="flex flex-wrap flex-row px-4">
-          {booksData.map((book, index) => (
-            <Pressable
-              key={index}
-              className="w-1/2 p-2"
-              onPress={() =>
-                Linking.openURL(`${book.url}`).catch((err) =>
-                  console.error(err)
-                )
-              }
-            >
-              <View className="p-4 rounded-lg gap-4 flex justify-center items-center bg-neutral-900">
-                <Image
-                  source={bookThumbnailMap[book.id]}
-                  className="w-32 h-48 object-contain rounded-md"
-                />
-                <Text className="text-center font-semibold" size="text-lg">
-                  {book.title}
-                </Text>
-              </View>
-            </Pressable>
-          ))}
+          {booksData.map((book, index) => {
+            const isAmazonBook = book.url.indexOf("amazon") >= 0;
+            return (
+              <Pressable
+                key={index}
+                className="w-1/2 p-2"
+                onPress={() =>
+                  Linking.openURL(`${book.url}`).catch((err) =>
+                    console.error(err)
+                  )
+                }
+              >
+                <View className="p-4 rounded-lg gap-4 flex justify-center items-center bg-neutral-900">
+                  <Image
+                    source={bookThumbnailMap[book.id]}
+                    className="w-32 h-48 object-contain rounded-md"
+                  />
+                  <Text className="text-center font-semibold" size="text-lg">
+                    {book.title}
+                  </Text>
+                  <Text
+                    color={
+                      isAmazonBook ? "text-orange-200" : "text-neutral-400"
+                    }
+                    className={classNames(
+                      "p-2 rounded-md uppercase",
+                      isAmazonBook ? "bg-orange-400/50" : "bg-neutral-800"
+                    )}
+                    size="text-xs"
+                  >
+                    {isAmazonBook ? "Amazon" : "Free"}
+                  </Text>
+                </View>
+              </Pressable>
+            );
+          })}
         </View>
         <Button
           icon="plus"
@@ -84,7 +100,6 @@ export default function BooksTab() {
         >
           Submit a Book
         </Button>
-        <View className="h-36" />
       </ScrollView>
     </SafeAreaView>
   );

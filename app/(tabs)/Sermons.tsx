@@ -20,7 +20,7 @@ export default function SermonsTab() {
           Sourced from Upper Room Media
         </Text>
       </View>
-      <ScrollView className="pb-72">
+      <ScrollView contentContainerClassName="flex flex-col items-center gap-8 pb-36">
         {sermonsData.map((sermon, index) => (
           <Pressable
             key={index}
@@ -60,7 +60,6 @@ export default function SermonsTab() {
         >
           Submit a Sermon
         </Button>
-        <View className="h-36" />
       </ScrollView>
     </SafeAreaView>
   );

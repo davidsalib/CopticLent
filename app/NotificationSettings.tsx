@@ -40,7 +40,7 @@ export default function ModalScreen() {
       </View>
       <View>
         {currentNotificationTime !== undefined ? (
-          <>
+          <View className="flex gap-4">
             <Button
               onPress={() => {
                 setIsSchedulingNotifications(true);
@@ -57,9 +57,12 @@ export default function ModalScreen() {
             >
               Turn Off Notifications
             </Button>
-          </>
+          </View>
         ) : (
-          <Button onPress={() => setIsSchedulingNotifications(true)}>
+          <Button
+            icon="bell"
+            onPress={() => setIsSchedulingNotifications(true)}
+          >
             Schedule Notifications
           </Button>
         )}

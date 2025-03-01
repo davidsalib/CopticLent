@@ -15,7 +15,7 @@ const SettingsScreen = () => {
   return (
     <View>
       <SafeAreaView className="gap-4 flex flex-col">
-        <View className="px-4">
+        <View className="px-4 pt-8">
           <Text className="font-black" size="text-4xl">
             Settings
           </Text>

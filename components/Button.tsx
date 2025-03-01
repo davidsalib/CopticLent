@@ -11,7 +11,7 @@ const Button = ({
   icon,
   ...rest
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   variant?: "primary" | "secondary" | "text";
   icon?: keyof typeof FontAwesome.glyphMap;
@@ -51,19 +51,21 @@ const Button = ({
     >
       <View
         className={classNames(
-          "rounded-md flex items-center py-4 px-8",
+          "rounded-md flex flex-row justify-center gap-2 items-center py-4 px-8",
           variantClassName,
           className
         )}
       >
-        <FontAwesome name={icon} color={variantTextColor} />
-        <Text
-          color={variantTextColor}
-          className={variantTextClassName}
-          size="text-lg"
-        >
-          {children}
-        </Text>
+        {icon && <FontAwesome name={icon} color={iconColor} size={16} />}
+        {children && (
+          <Text
+            color={variantTextColor}
+            className={variantTextClassName}
+            size="text-lg"
+          >
+            {children}
+          </Text>
+        )}
       </View>
     </Pressable>
   );
