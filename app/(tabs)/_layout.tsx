@@ -9,7 +9,7 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={16} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -28,6 +28,9 @@ export default function TabLayout() {
         name="Today"
         options={{
           title: "Today",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar" color={color} />
+          ),
           headerShown: false,
         }}
       />
@@ -35,6 +38,7 @@ export default function TabLayout() {
         name="Books"
         options={{
           title: "Books",
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
           headerShown: false,
         }}
       />
@@ -42,6 +46,9 @@ export default function TabLayout() {
         name="Sermons"
         options={{
           title: "Sermons",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="microphone" color={color} />
+          ),
           headerShown: false,
         }}
       />
@@ -49,6 +56,7 @@ export default function TabLayout() {
         name="Settings"
         options={{
           title: "Settings",
+          tabBarIcon: ({ color }) => <TabBarIcon name="cog" color={color} />,
           headerShown: false,
         }}
       />
