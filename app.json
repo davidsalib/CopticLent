@@ -1,27 +1,28 @@
 {
   "expo": {
     "owner": "david_salib",
-    "name": "The Coptic Lent App",
-    "slug": "TheCopticLentApp",
+    "name": "Coptic Lent",
+    "slug": "Coptic Lent",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/lent-app.png",
+    "icon": "./assets/images/lent-app-icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/lent-app.png",
+      "image": "./assets/images/lent-app-splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#7D000C",
+      "width": 300
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.TheCopticLentApp"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.davidsalib.LentApp"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/lent-app.png",
-        "backgroundColor": "#000000"
+        "foregroundImage": "./assets/images/lent-app-icon.png",
+        "backgroundColor": "#6D000B"
       },
       "package": "com.davidsalib.LentApp"
     },
