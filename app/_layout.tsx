@@ -2,7 +2,7 @@ import "../global.css";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useRef, useState } from "react";
 import "react-native-reanimated";
@@ -11,6 +11,7 @@ import { Platform } from "react-native";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
+import { useIsOnboardingComplete } from "@/stores/AppStore";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -98,10 +99,16 @@ export default (function RootLayout() {
 });
 
 function RootLayoutNav() {
-  const colorScheme = "dark";
+  const isOnboardingComplete = useIsOnboardingComplete();
+
   return (
     <ThemeProvider value={DarkTheme}>
       <StatusBar style="light" />
+      {isOnboardingComplete ? (
+        <Redirect href="/(tabs)/Today" />
+      ) : (
+        <Redirect href="/onboarding/step1" />
+      )}
       <Stack>
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

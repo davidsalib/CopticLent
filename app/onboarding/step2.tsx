@@ -10,12 +10,18 @@ import { TailwindColorsHexCodes } from "@/types/tailwind.types";
 
 import { useScheduleNotification } from "@/utils/notifications";
 import Button from "@/components/Button";
+import { useAppSettingActions } from "@/stores/AppStore";
 
 export default function Step1() {
   const router = useRouter();
   const [selectedTime, setSelectedTime] = useState(NOTIFICATION_TIMES[8]);
   const { onScheduleTime } = useScheduleNotification(selectedTime);
+  const appSettingActions = useAppSettingActions();
 
+  const onCompleteOnboarding = () => {
+    appSettingActions.setOnboardingComplete(true);
+    router.push("/Today");
+  };
   return (
     <SafeAreaView>
       <View className="flex flex-col items-center justify-center h-full gap-8">
@@ -52,12 +58,12 @@ export default function Step1() {
           <Button
             onPress={() => {
               onScheduleTime();
-              router.push("/Today");
+              onCompleteOnboarding();
             }}
           >
             Schedule Daily at {selectedTime["12h"]}
           </Button>
-          <Button onPress={() => router.push("/Today")} variant="text">
+          <Button onPress={onCompleteOnboarding} variant="text">
             <Text color="text-neutral-500" size="text-lg">
               Continue without scheduling
             </Text>
