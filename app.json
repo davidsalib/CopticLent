@@ -1,10 +1,11 @@
 {
   "expo": {
+    "owner": "david_salib",
     "name": "The Coptic Lent App",
     "slug": "TheCopticLentApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/lent-app.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -21,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/lent-app.png",
         "backgroundColor": "#000000"
-      }
+      },
+      "package": "com.davidsalib.LentApp"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +33,14 @@
     "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "df5b2253-4279-4715-9928-667853b9e6d9"
+      }
     }
   }
 }
