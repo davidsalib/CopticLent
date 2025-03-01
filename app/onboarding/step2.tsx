@@ -11,6 +11,7 @@ import { TailwindColorsHexCodes } from "@/types/tailwind.types";
 import { useScheduleNotification } from "@/utils/notifications";
 import Button from "@/components/Button";
 import { useAppSettingActions } from "@/stores/AppStore";
+import { Alert } from "react-native";
 
 export default function Step1() {
   const router = useRouter();
@@ -20,8 +21,8 @@ export default function Step1() {
 
   const onCompleteOnboarding = () => {
     appSettingActions.setOnboardingComplete(true);
-    router.push("/Today");
   };
+
   return (
     <SafeAreaView>
       <View className="flex flex-col items-center justify-center h-full gap-8">
@@ -56,8 +57,20 @@ export default function Step1() {
 
         <View className="flex flex-col items-center gap-4">
           <Button
-            onPress={() => {
-              onScheduleTime(selectedTime);
+            onPress={async () => {
+              await onScheduleTime(selectedTime);
+              Alert.alert(
+                `Daily notifications scheduled at ${selectedTime["12h"]} ✅`,
+                "",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      router.push("/Today");
+                    },
+                  },
+                ]
+              );
               onCompleteOnboarding();
             }}
           >
