@@ -60,12 +60,26 @@ export default function TodayTab() {
   return (
     <SafeAreaView>
       <ScrollView contentContainerClassName="pb-24">
-        <View className="flex flex-col gap-2 p-16 bg-neutral-900 items-center m-4 rounded-lg">
+        <View className="flex flex-col gap-2 p-12 bg-neutral-900 items-center m-4 rounded-lg">
           <Text className="uppercase" color="text-neutral-500" size="text-base">
             Day {currentDayOfLent + 1} of Lent
           </Text>
           <Text className="font-black" color="text-white" size="text-4xl">
             {todayLentData.theme}
+          </Text>
+          <Text
+            color="text-neutral-300"
+            size="text-base"
+            className="text-center"
+          >
+            "{todayLentData.fatherQuoteText}"
+          </Text>
+          <Text
+            color="text-neutral-500"
+            size="text-base"
+            className="text-center"
+          >
+            {todayLentData.fatherQuoteName}
           </Text>
         </View>
 
@@ -105,19 +119,19 @@ export default function TodayTab() {
                 </Text>
               </View>
               <Text size="text-2xl" className="font-bold">
-                Lent Insights
+                Lenten Patristic Insights
               </Text>
             </View>
             <Text className="text-center">
-              The Coptic Lent App uses commentaries from the Church Fathers
-              along with Open AI's O1-Reasoning Model to summarize the Church
-              Father's insights on the theme and scripture of the day.
+              Coptic Lent App uses commentaries from the Church Fathers along
+              with Open AI's most advanced O1-Reasoning Model to summarize the
+              Church Father's insights on the theme and scripture of the day.
             </Text>
             <Text className="text-center">
-              This is an experimental feature and AI is expected to make
-              mistakes. By accessing AI summaries, you accept that summaries are
-              not authoritative and that primary sources should be referenced
-              and take precedence in the case of any discrepencies.
+              However, this is an experimental feature and AI *is expected* to
+              make mistakes. By accessing AI summaries, you accept that
+              summaries are not authoritative and that primary sources should be
+              referenced and take precedence in the case of any discrepancies.
             </Text>
             <Button
               onPress={() =>
