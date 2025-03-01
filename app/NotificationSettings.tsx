@@ -74,7 +74,7 @@ export default function ModalScreen() {
     <View className="flex flex-col items-center justify-center h-full gap-8">
       <View className="flex flex-col items-center justify-center gap-2 px-6">
         <Text className="font-bold text-center" size="text-3xl">
-          When would you like to receive your daily lent notification?
+          When would you like to receive your daily Lent notification?
         </Text>
       </View>
 
@@ -108,7 +108,7 @@ export default function ModalScreen() {
           onPress={() => {
             onScheduleTime(timeToSchedule);
             Alert.alert(
-              `Daily notifications scheduled every day at ${timeToSchedule["12h"]} ✅`,
+              `Daily notifications scheduled at ${timeToSchedule["12h"]} ✅`,
               "",
               [
                 {

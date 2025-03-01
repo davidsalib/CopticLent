@@ -136,8 +136,8 @@ export default function TodayTab() {
             <View className="flex gap-4">
               <Text className="text-center">
                 Coptic Lent App uses commentaries from the Church Fathers along
-                with Open AI's most advanced O1-Reasoning Model to summarize the
-                Church Father's insights on the theme and scripture of the day.
+                with Open AI's mxost advanced models to summarize the Church
+                Father's insights on the theme and scripture of the day.
               </Text>
               <Text className="text-center">
                 However, this is an experimental feature and AI *is expected* to

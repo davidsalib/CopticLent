@@ -16,9 +16,6 @@ export default function SermonsTab() {
         <Text className="font-black" size="text-4xl">
           Sermons
         </Text>
-        <Text className="uppercase text-sm" color="text-neutral-400">
-          Sourced from Upper Room Media
-        </Text>
       </View>
       <ScrollView contentContainerClassName="flex flex-col items-center gap-8 pb-36">
         {sermonsData.map((sermon, index) => (
