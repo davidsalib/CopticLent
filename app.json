@@ -2,7 +2,7 @@
   "expo": {
     "owner": "david_salib",
     "name": "Coptic Lent",
-    "slug": "Coptic Lent",
+    "slug": "TheCopticLentApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/lent-app-icon.png",
