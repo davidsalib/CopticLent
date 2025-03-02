@@ -111,6 +111,10 @@ function RootLayoutNav() {
           name="NotificationSettings"
           options={{ presentation: "modal", title: "Daily Notification" }}
         />
+        <Stack.Screen
+          name="WebViewScreen"
+          options={{ presentation: "modal", title: "" }}
+        />
       </Stack>
     </ThemeProvider>
   );

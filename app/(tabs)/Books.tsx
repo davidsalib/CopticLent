@@ -9,6 +9,8 @@ import {
 import booksData from "../../data/books.json";
 import Button from "@/components/Button";
 import { classNames } from "@/utils/style";
+import { useRouter } from "expo-router";
+
 
 const bookThumbnailMap: Record<string, any> = {
   AH_ITS: require("../../data/book_thumbnails/AH_ITS.png"),
@@ -43,6 +45,8 @@ const bookThumbnailMap: Record<string, any> = {
 };
 
 export default function BooksTab() {
+  const router = useRouter();
+
   return (
     <SafeAreaView>
       <View className="flex flex-col gap-2 px-4 pt-8 pb-4">
@@ -51,25 +55,30 @@ export default function BooksTab() {
         </Text>
       </View>
       <ScrollView contentContainerClassName="flex flex-col items-center gap-8 pb-36">
-        <View className="flex flex-wrap flex-row px-4">
+        <View className="flex flex-row flex-wrap px-4">
           {booksData.map((book, index) => {
             const isAmazonBook = book.url.indexOf("amazon") >= 0;
             return (
               <Pressable
                 key={index}
                 className="w-1/2 p-2"
-                onPress={() =>
-                  Linking.openURL(`${book.url}`).catch((err) =>
-                    console.error(err)
-                  )
-                }
+                onPress={() =>{
+                    if (!isAmazonBook) {
+                        router.push({
+                          pathname: "/WebViewScreen",
+                          params: { url: book.url, title: book.title },
+                        });
+                      } else {
+                        Linking.openURL(book.url).catch((err) => console.error(err));
+                      }
+                }}
               >
-                <View className="p-4 rounded-lg gap-4 flex justify-center items-center bg-neutral-900">
+                <View className="flex items-center justify-center gap-4 p-4 rounded-lg bg-neutral-900">
                   <Image
                     source={bookThumbnailMap[book.id]}
-                    className="w-32 h-48 object-contain rounded-md"
+                    className="object-contain w-32 h-48 rounded-md"
                   />
-                  <Text className="text-center font-semibold" size="text-lg">
+                  <Text className="font-semibold text-center" size="text-lg">
                     {book.title}
                   </Text>
                   <Text
@@ -115,7 +124,7 @@ const Card = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <View className="flex flex-col gap-2 border-t border-neutral-800 px-4 pt-4">
+    <View className="flex flex-col gap-2 px-4 pt-4 border-t border-neutral-800">
       <Text className="uppercase" color="text-neutral-500" size="text-base">
         {title}
       </Text>
