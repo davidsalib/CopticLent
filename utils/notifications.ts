@@ -26,31 +26,31 @@ export const scheduleDailyLentNotifications = async (
   // get the current day of lent to use as starting point to schedule all future notifications
   const currentDayOfLent = getCurrentDayOfLent(new Date());
 
-  dailyLentData
-    .slice(currentDayOfLent, currentDayOfLent)
-    .forEach((dayData, index) => {
-      const dayOfLent = currentDayOfLent + index;
+  dailyLentData.slice(currentDayOfLent).forEach((dayData, index) => {
+    const dayOfLent = currentDayOfLent + index;
 
-      const today = new Date();
-      const targetDate = new Date(today);
+    const today = new Date();
+    const targetDate = new Date(today);
 
-      // // Set the target hour
-      targetDate.setHours(hourOfDayIn24hTime, 0, 0, 0);
+    // // Set the target hour
+    targetDate.setHours(hourOfDayIn24hTime, 0, 0, 0);
 
-      // // Add days for future notifications
-      targetDate.setDate(targetDate.getDate() + index);
+    // Add days for future notifications
+    targetDate.setDate(targetDate.getDate() + index);
 
-      scheduleNotificationAsync({
-        content: {
-          title: `${dayData.theme} (Day ${dayOfLent})`,
-          body: `${dayData.fatherQuoteText} - ${dayData.fatherQuoteName}`,
-        },
-        trigger: {
-          type: SchedulableTriggerInputTypes.DATE,
-          date: targetDate,
-        },
-      });
-    });
+    const request: Notifications.NotificationRequestInput = {
+      content: {
+        title: `${dayData.theme} (Day ${dayOfLent + 1})`,
+        body: `${dayData.fatherQuoteText} - ${dayData.fatherQuoteName}`,
+      },
+      trigger: {
+        type: SchedulableTriggerInputTypes.DATE,
+        date: targetDate,
+      },
+    };
+
+    scheduleNotificationAsync(request);
+  });
 };
 
 export async function cancelAllNotifications() {
