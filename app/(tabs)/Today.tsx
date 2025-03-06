@@ -1,12 +1,17 @@
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
-import { Text as BaseText, Share } from "react-native";
+import {
+  AppState,
+  AppStateStatus,
+  Text as BaseText,
+  Share,
+} from "react-native";
 import { SafeAreaView, ScrollView } from "react-native";
 import lentDailyData from "../../data/lentFinalOutput.json";
 import { decodeVerseId } from "@/utils/bible";
 import { TailwindColorsHexCodes } from "@/types/tailwind.types";
 import { getCurrentDayOfLent } from "@/utils/notifications";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useAcceptedAIGeneratedContent,
   useAppSettingActions,
@@ -17,11 +22,34 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 export default function TodayTab() {
   const hasAcceptedAIGeneratedContent = useAcceptedAIGeneratedContent();
   const appSettignActions = useAppSettingActions();
-  const todayDate = new Date();
+  const [lastDate, setLastDate] = useState(new Date());
   const currentDayOfLent = useMemo(
-    () => getCurrentDayOfLent(todayDate),
-    [todayDate]
+    () => getCurrentDayOfLent(lastDate),
+    [lastDate]
   );
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === "active") {
+        const currentDate = new Date();
+        console.log("cur date is", currentDate.toDateString());
+        if (currentDate.toDateString() !== lastDate.toDateString()) {
+          setLastDate(currentDate);
+          // Add any logic here to refresh the component
+        }
+      }
+    };
+
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [lastDate]);
+
   const todayLentData = lentDailyData[currentDayOfLent];
   const bibleStart = decodeVerseId(todayLentData.bibleStart);
   const bibleEnd = decodeVerseId(todayLentData.bibleEnd);
@@ -74,7 +102,11 @@ export default function TodayTab() {
             >
               Day {currentDayOfLent + 1} of Lent
             </Text>
-            <Text className="font-black" color="text-white" size="text-4xl">
+            <Text
+              className="font-black text-center"
+              color="text-white"
+              size="text-4xl"
+            >
               {todayLentData.theme}
             </Text>
             <Text
@@ -136,7 +168,7 @@ export default function TodayTab() {
             <View className="flex gap-4">
               <Text className="text-center">
                 Coptic Lent App uses commentaries from the Church Fathers along
-                with Open AI's mxost advanced models to summarize the Church
+                with Open AI's most advanced models to summarize the Church
                 Father's insights on the theme and scripture of the day.
               </Text>
               <Text className="text-center">
