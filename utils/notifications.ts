@@ -1,42 +1,42 @@
-import * as Notifications from "expo-notifications";
-import * as Device from "expo-device";
-import Constants from "expo-constants";
+import * as Notifications from "expo-notifications"
+import * as Device from "expo-device"
+import Constants from "expo-constants"
 import {
   SchedulableTriggerInputTypes,
   scheduleNotificationAsync,
   cancelAllScheduledNotificationsAsync,
-} from "expo-notifications";
-import dailyLentData from "../data/lentFinalOutput.json";
-import { DailyNotificationTime } from "@/app/onboarding/step2";
-import { useCallback } from "react";
-import { useAppSettingActions, useAppSettings } from "@/stores/AppStore";
-import { Platform } from "react-native";
+} from "expo-notifications"
+import dailyLentData from "../data/lentFinalOutput.json"
+import { DailyNotificationTime } from "@/app/onboarding/step2"
+import { useCallback } from "react"
+import { useAppSettingActions, useAppSettings } from "@/stores/AppStore"
+import { Platform } from "react-native"
 
 // TODO: update this every day for the first day of lent
-export const FIRST_DAY_OF_LENT = new Date("2025-02-24T00:00:00-08:00");
+export const FIRST_DAY_OF_LENT = new Date("2026-02-15T00:00:00-08:00")
 
 export const getCurrentDayOfLent = (todayDate: Date) =>
   Math.floor(
-    (todayDate.getTime() - FIRST_DAY_OF_LENT.getTime()) / (1000 * 60 * 60 * 24)
-  );
+    (todayDate.getTime() - FIRST_DAY_OF_LENT.getTime()) / (1000 * 60 * 60 * 24),
+  )
 
 export const scheduleDailyLentNotifications = async (
-  hourOfDayIn24hTime: number
+  hourOfDayIn24hTime: number,
 ) => {
   // get the current day of lent to use as starting point to schedule all future notifications
-  const currentDayOfLent = getCurrentDayOfLent(new Date());
+  const currentDayOfLent = getCurrentDayOfLent(new Date())
 
   dailyLentData.slice(currentDayOfLent).forEach((dayData, index) => {
-    const dayOfLent = currentDayOfLent + index;
+    const dayOfLent = currentDayOfLent + index
 
-    const today = new Date();
-    const targetDate = new Date(today);
+    const today = new Date()
+    const targetDate = new Date(today)
 
     // // Set the target hour
-    targetDate.setHours(hourOfDayIn24hTime, 0, 0, 0);
+    targetDate.setHours(hourOfDayIn24hTime, 0, 0, 0)
 
     // Add days for future notifications
-    targetDate.setDate(targetDate.getDate() + index);
+    targetDate.setDate(targetDate.getDate() + index)
 
     const request: Notifications.NotificationRequestInput = {
       content: {
@@ -47,55 +47,55 @@ export const scheduleDailyLentNotifications = async (
         type: SchedulableTriggerInputTypes.DATE,
         date: targetDate,
       },
-    };
+    }
 
-    scheduleNotificationAsync(request);
-  });
-};
+    scheduleNotificationAsync(request)
+  })
+}
 
 export async function cancelAllNotifications() {
   try {
-    await cancelAllScheduledNotificationsAsync();
-    useAppSettings.getState().actions.setDailyNotificationTime(undefined);
-    console.log("All scheduled notifications have been canceled.");
+    await cancelAllScheduledNotificationsAsync()
+    useAppSettings.getState().actions.setDailyNotificationTime(undefined)
+    console.log("All scheduled notifications have been canceled.")
   } catch (error) {
-    console.error("Error canceling scheduled notifications:", error);
+    console.error("Error canceling scheduled notifications:", error)
   }
 }
 
 export const useScheduleNotification = () => {
-  const appSettingsActions = useAppSettingActions();
+  const appSettingsActions = useAppSettingActions()
 
   const onScheduleTime = useCallback(
     async (time: DailyNotificationTime | undefined) => {
       if (time === undefined) {
-        return;
+        return
       }
 
       const scheduleNotifs = async () => {
-        await cancelAllNotifications();
-        appSettingsActions.setDailyNotificationTime(time);
-        scheduleDailyLentNotifications(parseInt(time["24h"].split(":")[0]));
-      };
+        await cancelAllNotifications()
+        appSettingsActions.setDailyNotificationTime(time)
+        scheduleDailyLentNotifications(parseInt(time["24h"].split(":")[0]))
+      }
 
-      const { status } = await Notifications.getPermissionsAsync();
+      const { status } = await Notifications.getPermissionsAsync()
       if (status !== "granted") {
         registerForPushNotificationsAsync().then((token) => {
-          scheduleNotifs();
-        });
+          scheduleNotifs()
+        })
       } else {
         // First clear all existing notifications
-        scheduleNotifs();
+        scheduleNotifs()
       }
     },
-    []
-  );
+    [],
+  )
 
-  return { onScheduleTime };
-};
+  return { onScheduleTime }
+}
 
 async function registerForPushNotificationsAsync() {
-  let token;
+  let token
 
   if (Platform.OS === "android") {
     await Notifications.setNotificationChannelAsync("myNotificationChannel", {
@@ -103,20 +103,19 @@ async function registerForPushNotificationsAsync() {
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#FF231F7C",
-    });
+    })
   }
 
   if (Device.isDevice) {
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
+    const { status: existingStatus } = await Notifications.getPermissionsAsync()
+    let finalStatus = existingStatus
     if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
+      const { status } = await Notifications.requestPermissionsAsync()
+      finalStatus = status
     }
     if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
-      return;
+      alert("Failed to get push token for push notification!")
+      return
     }
     // Learn more about projectId:
     // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
@@ -124,22 +123,22 @@ async function registerForPushNotificationsAsync() {
     try {
       const projectId =
         Constants?.expoConfig?.extra?.eas?.projectId ??
-        Constants?.easConfig?.projectId;
+        Constants?.easConfig?.projectId
       if (!projectId) {
-        throw new Error("Project ID not found");
+        throw new Error("Project ID not found")
       }
       token = (
         await Notifications.getExpoPushTokenAsync({
           projectId,
         })
-      ).data;
-      console.log(token);
+      ).data
+      console.log(token)
     } catch (e) {
-      token = `${e}`;
+      token = `${e}`
     }
   } else {
-    alert("Must use physical device for Push Notifications");
+    alert("Must use physical device for Push Notifications")
   }
 
-  return token;
+  return token
 }

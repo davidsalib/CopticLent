@@ -1,58 +1,143 @@
-import EditScreenInfo from "@/components/EditScreenInfo";
-import { Text, View } from "@/components/Themed";
-import {
-  AppState,
-  AppStateStatus,
-  Text as BaseText,
-  Share,
-} from "react-native";
-import { SafeAreaView, ScrollView } from "react-native";
-import lentDailyData from "../../data/lentFinalOutput.json";
-import { decodeVerseId } from "@/utils/bible";
-import { TailwindColorsHexCodes } from "@/types/tailwind.types";
-import { getCurrentDayOfLent } from "@/utils/notifications";
-import { useEffect, useMemo, useState } from "react";
+import EditScreenInfo from "@/components/EditScreenInfo"
+import { Text, View } from "@/components/Themed"
+import { AppState, AppStateStatus, Text as BaseText, Share } from "react-native"
+import { SafeAreaView, ScrollView } from "react-native"
+import lentDailyData from "../../data/lentFinalOutput.json"
+import { decodeVerseId } from "@/utils/bible"
+import { TailwindColorsHexCodes } from "@/types/tailwind.types"
+import { getCurrentDayOfLent } from "@/utils/notifications"
+import { useEffect, useMemo, useState } from "react"
 import {
   useAcceptedAIGeneratedContent,
   useAppSettingActions,
-} from "@/stores/AppStore";
-import Button from "@/components/Button";
-import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+} from "@/stores/AppStore"
+import Button from "@/components/Button"
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons"
 
 export default function TodayTab() {
-  const hasAcceptedAIGeneratedContent = useAcceptedAIGeneratedContent();
-  const appSettignActions = useAppSettingActions();
-  const [lastDate, setLastDate] = useState(new Date());
+  const hasAcceptedAIGeneratedContent = useAcceptedAIGeneratedContent()
+  const appSettignActions = useAppSettingActions()
+  const [lastDate, setLastDate] = useState(new Date())
   const currentDayOfLent = useMemo(
     () => getCurrentDayOfLent(lastDate),
-    [lastDate]
-  );
+    [lastDate],
+  )
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       if (nextAppState === "active") {
-        const currentDate = new Date();
-        console.log("cur date is", currentDate.toDateString());
+        const currentDate = new Date()
+        console.log("cur date is", currentDate.toDateString())
         if (currentDate.toDateString() !== lastDate.toDateString()) {
-          setLastDate(currentDate);
+          setLastDate(currentDate)
           // Add any logic here to refresh the component
         }
       }
-    };
+    }
 
     const subscription = AppState.addEventListener(
       "change",
-      handleAppStateChange
-    );
+      handleAppStateChange,
+    )
 
     return () => {
-      subscription.remove();
-    };
-  }, [lastDate]);
+      subscription.remove()
+    }
+  }, [lastDate])
 
-  const todayLentData = lentDailyData[currentDayOfLent];
-  const bibleStart = decodeVerseId(todayLentData.bibleStart);
-  const bibleEnd = decodeVerseId(todayLentData.bibleEnd);
+  const isBeforeLent = currentDayOfLent < 0
+  const isAfterLent = currentDayOfLent >= lentDailyData.length
+  const clampedDay = Math.max(
+    0,
+    Math.min(currentDayOfLent, lentDailyData.length - 1),
+  )
+  const todayLentData = lentDailyData[clampedDay]
+  const bibleStart = decodeVerseId(todayLentData.bibleStart)
+  const bibleEnd = decodeVerseId(todayLentData.bibleEnd)
+
+  if (isBeforeLent) {
+    const daysUntilLent = Math.abs(currentDayOfLent)
+    return (
+      <SafeAreaView>
+        <ScrollView contentContainerClassName="pb-24">
+          <View className="bg-neutral-900 m-4 rounded-lg">
+            <View className="flex flex-col gap-2 p-12 items-center">
+              <Text
+                className="uppercase"
+                color="text-neutral-500"
+                size="text-xl"
+              >
+                Prepare Your Heart
+              </Text>
+              <Text
+                className="font-black text-center"
+                color="text-white"
+                size="text-4xl"
+              >
+                Lent begins in {daysUntilLent} day
+                {daysUntilLent !== 1 ? "s" : ""}
+              </Text>
+              <Text
+                color="text-neutral-300"
+                size="text-base"
+                className="text-center mt-4"
+              >
+                The Great Lent has not yet begun. Use this time to prepare
+                yourself spiritually for the journey ahead.
+              </Text>
+            </View>
+          </View>
+          <Text
+            className="text-center m-4 max-w-xs w-full self-center flex-1"
+            color="text-neutral-400"
+          >
+            May Christ's light shine within you and to all those around you.
+          </Text>
+        </ScrollView>
+      </SafeAreaView>
+    )
+  }
+
+  if (isAfterLent) {
+    return (
+      <SafeAreaView>
+        <ScrollView contentContainerClassName="pb-24">
+          <View className="bg-neutral-900 m-4 rounded-lg">
+            <View className="flex flex-col gap-2 p-12 items-center">
+              <Text
+                className="uppercase"
+                color="text-neutral-500"
+                size="text-base"
+              >
+                Christ is Risen!
+              </Text>
+              <Text
+                className="font-black text-center"
+                color="text-white"
+                size="text-4xl"
+              >
+                Happy Easter
+              </Text>
+              <Text
+                color="text-neutral-300"
+                size="text-base"
+                className="text-center mt-4"
+              >
+                The Great Lent has concluded. Rejoice in the Resurrection of our
+                Lord Jesus Christ!
+              </Text>
+            </View>
+          </View>
+          <Text
+            className="text-center m-4 max-w-xs w-full self-center flex-1"
+            color="text-neutral-400"
+          >
+            May Christ's light shine within you and to all those around you.
+          </Text>
+        </ScrollView>
+      </SafeAreaView>
+    )
+  }
 
   const AIGeneratedContent = (
     <>
@@ -78,7 +163,7 @@ export default function TodayTab() {
         isAIGeneratedContent={true}
       />
     </>
-  );
+  )
 
   return (
     <SafeAreaView>
@@ -198,7 +283,7 @@ export default function TodayTab() {
         </Text>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const Card = ({
@@ -207,10 +292,10 @@ const Card = ({
   children,
   isAIGeneratedContent,
 }: {
-  title: string;
-  description?: string;
-  children?: React.ReactNode;
-  isAIGeneratedContent?: boolean;
+  title: string
+  description?: string
+  children?: React.ReactNode
+  isAIGeneratedContent?: boolean
 }) => {
   return (
     <View className="flex flex-col gap-2 border-b border-neutral-800 px-4 py-8">
@@ -233,5 +318,5 @@ const Card = ({
       )}
       {children}
     </View>
-  );
-};
+  )
+}

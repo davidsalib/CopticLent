@@ -3,7 +3,7 @@
     "owner": "david_salib",
     "name": "Coptic Lent",
     "slug": "TheCopticLentApp",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/lent-app-icon.png",
     "scheme": "myapp",
