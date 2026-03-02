@@ -13,8 +13,7 @@ import { useAppSettingActions, useAppSettings } from "@/stores/AppStore"
 import { Platform } from "react-native"
 
 // TODO: update this every day for the first day of lent
-export const FIRST_DAY_OF_LENT = new Date("2026-02-15T00:00:00-08:00")
-
+export const FIRST_DAY_OF_LENT = new Date("2026-02-13T00:00:00-08:00")
 export const getCurrentDayOfLent = (todayDate: Date) =>
   Math.floor(
     (todayDate.getTime() - FIRST_DAY_OF_LENT.getTime()) / (1000 * 60 * 60 * 24),
